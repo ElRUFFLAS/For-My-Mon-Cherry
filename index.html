@@ -1,171 +1,264 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Para mi amor ❤️</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: black;
-      overflow: hidden;
-      text-align: center;
-      color: white;
-      font-family: "Courier New", monospace;
-    }
+<meta charset="UTF-8">
+<title>Para Raúl y Gloria ❤️</title>
+<style>
+body {
+  margin:0; padding:0;
+  background:black;
+  overflow:hidden;
+  text-align:center;
+  font-family:"Courier New", monospace;
+  transition: background 2s;
+}
 
-    /* Imagen de fondo (tu corazón) */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url("corazon.png.png") center/contain no-repeat;
-      opacity: 0.15;
-      animation: palpitar 2s infinite;
-      z-index: -1;
-    }
+/* Fondo corazón pulsante */
+body::before {
+  content:"";
+  position:fixed; top:0; left:0;
+  width:100%; height:100%;
+  background: url("corazon.png.png") center/contain no-repeat;
+  opacity:0.15;
+  animation:pulsarFondo 2s infinite;
+  z-index:-1;
+}
+@keyframes pulsarFondo {
+  0%,100%{transform:scale(1);opacity:0.15;}
+  50%{transform:scale(1.15);opacity:0.3;}
+}
 
-    @keyframes palpitar {
-      0%, 100% { transform: scale(1); opacity: 0.15; }
-      50% { transform: scale(1.1); opacity: 0.25; }
-    }
+/* Pantalla inicial Te amo */
+#teamo {
+  position:absolute; top:35%; left:50%;
+  transform:translate(-50%,-50%);
+  font-size:3em;
+  color:#ff66b2;
+  text-shadow:0 0 15px #ff004c,0 0 30px #ff66b2;
+  animation:latido 1.5s infinite;
+  opacity:1;
+  transition:opacity 2s ease-out;
+}
 
-    /* Corazones flotando */
-    .corazon {
-      position: absolute;
-      color: #ff004c;
-      font-size: 20px;
-      animation: flotar 6s linear infinite;
-      text-shadow: 0 0 10px #ff004c, 0 0 20px #ff66b2;
-    }
+/* Carta */
+#mensaje {
+  display:none;
+  position:absolute;
+  top:15%;
+  left:50%;
+  transform:translateX(-50%);
+  width:45%;
+  font-size:1.3em;
+  line-height:1.6em;
+  white-space: pre-line;
+  word-wrap: break-word;
+  text-align:left;
+  color:#fff;
+  text-shadow:0 0 10px #ff004c,0 0 20px #ff66b2;
+  opacity:0;
+  transition: opacity 3s ease-in;
+}
+.cursor {
+  display:inline-block;
+  width:10px;
+  background:#ff66b2;
+  margin-left:2px;
+  animation:blink 0.8s infinite;
+}
+@keyframes blink {0%,50%{opacity:1;}50.01%,100%{opacity:0;}}
 
-    @keyframes flotar {
-      0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
-      30% { opacity: 1; }
-      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
-    }
+/* Corazones */
+.corazon {
+  position:absolute;
+  color:#ff004c;
+  font-size:20px;
+  text-shadow:0 0 10px #ff004c,0 0 20px #ff66b2;
+  pointer-events:none;
+  user-select:none;
+  transition: opacity 0.5s, transform 6s linear;
+}
 
-    /* Texto romántico */
-    #mensaje {
-      position: absolute;
-      top: 35%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 3em;
-      text-shadow: 0 0 20px #ff004c, 0 0 40px #ff66b2;
-      animation: brillo 2s infinite alternate;
-    }
+/* Botón */
+#playBtn {
+  position:absolute; bottom:80px; left:50%;
+  transform:translateX(-50%);
+  padding:15px 30px; font-size:1.3em;
+  color:white; background:#ff004c;
+  border:none; border-radius:50px;
+  cursor:pointer;
+  box-shadow:0 0 15px #ff004c,0 0 30px #ff66b2;
+  animation:latido 1.5s infinite;
+}
 
-    @keyframes brillo {
-      from { text-shadow: 0 0 10px #ff004c; }
-      to   { text-shadow: 0 0 30px #ff66b2; }
-    }
+/* Mensaje final */
+#final {
+  display:none;
+  position:absolute;
+  top:40%; left:50%;
+  transform:translate(-50%, -50%) scale(0.5);
+  font-size:3.5em;
+  color:#ff66b2;
+  text-shadow:0 0 15px #ff004c,0 0 30px #ff66b2,0 0 40px #ffb3d9,0 0 60px #fff;
+  opacity:0;
+  transition: opacity 1s ease-in, transform 1s ease-in;
+  z-index:100;
+}
 
-    /* Mensaje final */
-    #mensajeFinal {
-      position: absolute;
-      top: 55%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 2em;
-      color: #ff66b2;
-      text-shadow: 0 0 15px #ff004c, 0 0 30px #ff66b2;
-      display: none;
-    }
+/* Partículas */
+.particula {
+  position:absolute;
+  color:#fff0ff;
+  font-size:12px;
+  opacity:0.8;
+  pointer-events:none;
+  user-select:none;
+  animation:particulaAnim 3s linear forwards;
+}
+@keyframes particulaAnim {
+  0%{transform:translate(0,0) scale(1); opacity:0.8;}
+  100%{transform:translate(var(--x),var(--y)) scale(0); opacity:0;}
+}
 
-    /* Fecha */
-    #fecha {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 1.2em;
-      opacity: 0.7;
-    }
-
-    /* Botón romántico */
-    #playBtn {
-      position: absolute;
-      bottom: 80px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 15px 30px;
-      font-size: 1.3em;
-      color: white;
-      background: #ff004c;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      box-shadow: 0 0 15px #ff004c, 0 0 30px #ff66b2;
-      animation: latido 1.5s infinite;
-      transition: all 0.3s ease;
-    }
-
-    #playBtn:hover {
-      background: #ff66b2;
-      box-shadow: 0 0 25px #ff66b2, 0 0 50px #ff004c;
-      transform: translateX(-50%) scale(1.1);
-    }
-
-    @keyframes latido {
-      0%, 100% { transform: translateX(-50%) scale(1); }
-      50% { transform: translateX(-50%) scale(1.2); }
-    }
-  </style>
+@keyframes latido {0%,100%{transform:translateX(-50%) scale(1);}50%{transform:translateX(-50%) scale(1.2);}}
+</style>
 </head>
 <body>
-  <div id="mensaje">💖 Te Amo 💖</div>
-  <div id="mensajeFinal">💍 Por siempre juntos 💍</div>
-  <div id="fecha">Raúl & Gloria — 20/07/2025</div>
 
-  <!-- Botón para reproducir -->
-  <button id="playBtn">🎶 Reproducir nuestra canción 🎶</button>
+<div id="teamo">❤️ Te amo ❤️</div>
+<div id="mensaje"><span id="texto"></span><span class="cursor"></span></div>
+<div id="final">🎉 Feliz aniversario Amor, te amo 🎉<br>Raúl & Gloria<br>20/07/2025</div>
+<button id="playBtn">🎶 Reproducir nuestra canción 🎶</button>
+<audio id="musica" loop>
+  <source src="Ghost - Life Eternal.mp3" type="audio/mpeg">
+</audio>
 
-  <!-- Música -->
-  <audio id="musica" loop>
-    <source src="Ghost - Life Eternal (Audio) [aMPbtR79Yew].mp3" type="audio/mpeg">
-    Tu navegador no soporta audio.
-  </audio>
+<script>
+const parrafos=[
+  "Gloria, amor mío, hoy cumplimos nuestro primer mes juntos, y aunque el tiempo parezca corto, lo que siento por ti es tan grande que a veces me cuesta explicarlo con palabras.\n\n",
+  "Eres mi pensamiento constante, la razón de mis sonrisas inesperadas y el motivo por el cual cada día quiero ser mejor. No sé cómo lo logras, pero con tu mirada me desarmas, con tus palabras me calmas y con tu presencia me vuelves adicto a ti.\n\n",
+  "Un mes es apenas el comienzo, Gloria. Quiero que este sea el primero de miles, quiero caminar a tu lado en todo, quiero que seas mi amor, mi paz, mi locura y mi eternidad.\n\n",
+  "Feliz primer mes, mi vida. Te amo con todo lo que soy y con todo lo que seré. ❤️"
+];
 
-  <script>
-    // Cambiar mensaje después de 10 seg
-    setTimeout(() => {
-      document.getElementById("mensaje").textContent = "🥰 Feliz primer mes amor, te amo mucho ❤️";
-    }, 10000);
+const textoEl=document.getElementById("texto");
+const teamoEl=document.getElementById("teamo");
+const mensajeEl=document.getElementById("mensaje");
+const finalEl=document.getElementById("final");
 
-    // Mostrar mensaje final después de 20 seg
-    setTimeout(() => {
-      document.getElementById("mensajeFinal").style.display = "block";
-    }, 20000);
+let pIndex=0, cIndex=0;
 
-    // Corazones flotando
-    function crearCorazon() {
-      const corazon = document.createElement("div");
-      corazon.className = "corazon";
-      corazon.innerText = "❤️";
-      corazon.style.left = Math.random() * window.innerWidth + "px";
-      corazon.style.fontSize = (Math.random() * 20 + 15) + "px";
-      document.body.appendChild(corazon);
-
-      setTimeout(() => corazon.remove(), 6000);
+// Escribir carta
+function escribir(){
+  if(pIndex<parrafos.length){
+    if(cIndex<parrafos[pIndex].length){
+      textoEl.textContent+=parrafos[pIndex][cIndex];
+      cIndex++;
+      setTimeout(escribir,40);
+    }else{
+      pIndex++; cIndex=0;
+      setTimeout(escribir,600);
     }
-    setInterval(crearCorazon, 500);
+  }else{
+    // Carta desaparece
+    mensajeEl.style.opacity=0;
+    setTimeout(()=>{
+      mensajeEl.style.display="none";
+      // Mostrar mensaje final
+      finalEl.style.display="block";
+      setTimeout(()=>{
+        finalEl.style.opacity=1;
+        finalEl.style.transform="translate(-50%, -50%) scale(1)";
+        crearParticulas();
+        lluviaCorazones();
+      },100);
+    },1500);
+  }
+}
 
-    // Música controlada por el botón
-    const musica = document.getElementById("musica");
-    const playBtn = document.getElementById("playBtn");
+// Secuencia inicial
+setTimeout(()=>{
+  teamoEl.style.opacity=0;
+  setTimeout(()=>{
+    teamoEl.style.display="none";
+    mensajeEl.style.display="block";
+    setTimeout(()=>{
+      mensajeEl.style.opacity=1;
+      escribir();
+    },100);
+  },2000);
+},5000);
 
-    playBtn.addEventListener("click", () => {
-      musica.play().then(() => {
-        musica.volume = 1.0;
-        playBtn.style.display = "none"; // se oculta al reproducir
-      }).catch(err => {
-        console.log("Error al reproducir:", err);
-      });
-    });
-  </script>
+// Corazones aleatorios
+function crearCorazon(x=window.innerWidth/2,y=window.innerHeight/2,duration=6000){
+  const c=document.createElement("div");
+  c.className="corazon";
+  c.innerText="❤️";
+  c.style.left=x+"px";
+  c.style.top=y+"px";
+  document.body.appendChild(c);
+  setTimeout(()=>{
+    c.style.transform=`translateY(-${window.innerHeight+50}px)`;
+    c.style.opacity=0;
+  },50);
+  setTimeout(()=>c.remove(),duration);
+}
+setInterval(()=>crearCorazon(Math.random()*window.innerWidth,Math.random()*window.innerHeight),400);
+
+// Corazones que siguen el mouse
+document.addEventListener("mousemove", e=>{
+  const c=document.createElement("div");
+  c.className="corazon";
+  c.innerText="❤️";
+  c.style.left=e.clientX+"px";
+  c.style.top=e.clientY+"px";
+  document.body.appendChild(c);
+  setTimeout(()=>{
+    c.style.opacity=0;
+    setTimeout(()=>c.remove(),500);
+  },50);
+});
+
+// Partículas de celebración
+function crearParticulas(){
+  for(let i=0;i<50;i++){
+    const p=document.createElement("div");
+    p.className="particula";
+    p.style.left=(window.innerWidth/2)+"px";
+    p.style.top=(window.innerHeight/2)+"px";
+    p.style.setProperty('--x',(Math.random()*400-200)+"px");
+    p.style.setProperty('--y',(Math.random()*400-200)+"px");
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),3000);
+  }
+}
+
+// Lluvia de corazones desde abajo al final
+function lluviaCorazones(){
+  setInterval(()=>{
+    const x=Math.random()*window.innerWidth;
+    const y=window.innerHeight+20;
+    const corazon=document.createElement("div");
+    corazon.className="corazon";
+    corazon.innerText="❤️";
+    corazon.style.left=x+"px";
+    corazon.style.top=y+"px";
+    corazon.style.transition="transform 6s linear, opacity 6s linear";
+    document.body.appendChild(corazon);
+    setTimeout(()=>{
+      corazon.style.transform="translateY(-"+(window.innerHeight+50)+"px)";
+      corazon.style.opacity=0;
+    },50);
+    setTimeout(()=>corazon.remove(),6000);
+  },100);
+}
+
+// Música
+const musica=document.getElementById("musica");
+const playBtn=document.getElementById("playBtn");
+playBtn.addEventListener("click",()=>{
+  musica.play().then(()=>{playBtn.style.display="none";}).catch(err=>console.log(err));
+});
+</script>
 </body>
 </html>
+
